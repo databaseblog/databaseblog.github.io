@@ -10,6 +10,7 @@ SITENAME = u'All about Databases'
 SITEURL = ''
 
 PATH = 'content'
+STATIC_PATHS = ['.']
 
 TIMEZONE = 'Europe/London'
 
@@ -36,7 +37,7 @@ DEFAULT_PAGINATION = 10
 #RELATIVE_URLS = True
 
 PLUGIN_PATHS=[os.path.join(base_path, 'pelican-plugins')]
-PLUGINS = ['i18n_subsites', 'sitemap']
+PLUGINS = ['i18n_subsites', 'sitemap', 'pelican-page-hierarchy']
 
 THEME = os.path.join(base_path, 'themes/pelican-bootstrap3')
 JINJA_EXTENSIONS = ['jinja2.ext.i18n']
