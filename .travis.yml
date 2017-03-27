@@ -3,6 +3,6 @@ branches:
   only:
   - source
 install:
-- pip install pelican ghp-import n
+- pip install pelican ghp-import markdown
 script:
 - make html
