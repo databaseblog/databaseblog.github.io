@@ -1,5 +1,6 @@
 Title: Introduction to Neo4J
 Date: 2017-03-26 18:52
+Category: Neo4J
 
 The first database technology that I am going to explore is Neo4J. This is a relative newcomer to the Database Technologies market - having been originally launched only 10 years ago. (Relative to such staples as Oracle, which was already 30 years old at that point!)
 

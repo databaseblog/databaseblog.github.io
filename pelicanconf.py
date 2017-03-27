@@ -37,7 +37,7 @@ DEFAULT_PAGINATION = 10
 #RELATIVE_URLS = True
 
 PLUGIN_PATHS=[os.path.join(base_path, 'pelican-plugins')]
-PLUGINS = ['i18n_subsites', 'sitemap', 'pelican-page-hierarchy']
+PLUGINS = ['i18n_subsites', 'sitemap', 'pelican-page-hierarchy', 'subcategory']
 
 THEME = os.path.join(base_path, 'themes/pelican-bootstrap3')
 JINJA_EXTENSIONS = ['jinja2.ext.i18n']
@@ -57,3 +57,6 @@ SITEMAP = {
     }
 
 }
+
+PATH_METADATA= '(?P<subcategory_path>.*)/.*'
+DISPLAY_BREADCRUMBS=True
