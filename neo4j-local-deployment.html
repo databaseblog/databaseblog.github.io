@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
+<head>
+    <title>Neo4J - Local Deployment - All about Databases</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="canonical" href="https://databaseblog.github.io/neo4j-local-deployment.html">
+
+        <meta name="author" content="Graham Cox <graham@grahamcox.co.uk>" />
+        <meta name="description" content="Before you can do anything with Neo4J, you need to have access to a running instance. This is relatively easy, but has some subtle differences to many other data stores. The biggest thing to note is that a single Neo4J instance is a single database. There is no support - at …" />
+
+        <meta property="og:site_name" content="All about Databases" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="Neo4J - Local Deployment"/>
+        <meta property="og:url" content="https://databaseblog.github.io/neo4j-local-deployment.html"/>
+        <meta property="og:description" content="Before you can do anything with Neo4J, you need to have access to a running instance. This is relatively easy, but has some subtle differences to many other data stores. The biggest thing to note is that a single Neo4J instance is a single database. There is no support - at …"/>
+        <meta property="article:published_time" content="2017-03-27" />
+            <meta property="article:section" content="neo4j" />
+            <meta property="article:author" content="Graham Cox <graham@grahamcox.co.uk>" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://databaseblog.github.io/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://databaseblog.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="https://databaseblog.github.io/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://databaseblog.github.io/theme/css/style.css" type="text/css"/>
+
+        <link href="https://databaseblog.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
+              title="All about Databases ATOM Feed"/>
+
+
+
+        <link href="https://databaseblog.github.io/feeds/neo4j.atom.xml" type="application/atom+xml" rel="alternate"
+              title="All about Databases neo4j ATOM Feed"/>
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="https://databaseblog.github.io/" class="navbar-brand">
+All about Databases            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li >
+                            <a href="https://databaseblog.github.io/category/misc.html">Misc</a>
+                        </li>
+                        <li class="active">
+                            <a href="https://databaseblog.github.io/category/neo4j.html">Neo4j</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+            <ol class="breadcrumb">
+                <li><a href="https://databaseblog.github.io" title="All about Databases"><i class="fa fa-home fa-lg"></i></a></li>
+                <li class="active">Neo4J - Local Deployment</li>
+            </ol>
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="https://databaseblog.github.io/neo4j-local-deployment.html"
+                       rel="bookmark"
+                       title="Permalink to Neo4J - Local Deployment">
+                        Neo4J - Local Deployment
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2017-03-27T18:30:00+01:00"> Mon 27 March 2017</time>
+    </span>
+
+
+
+
+
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>Before you can do anything with Neo4J, you need to have access to a running instance. This is relatively easy, but has some subtle differences to many other data stores.</p>
+<p>The biggest thing to note is that a single Neo4J instance is a single database. There is no support - at present - for multiple schemas or databases inside the same instance. You can fake this, but it's really recommended to just have a different instance for each database you want to work with.</p>
+<p>Installing Neo4J locally is a really trivial process. You need to have Java already installed - since the entire Neo4J system is a Java Application - and then you simply visit <a href="https://neo4j.com/download/community-edition/">Neo4J</a> and download for your appropriate OS.</p>
+<p>If you are using macOS, and you download the DMG version, you will get an application that drops into the Applications area, which - when run - will do everything to set up and execute the system. I assume that the Windows version is the same, but I've not tried it.</p>
+<p>If you are using Linux, or the tar.gz version on macOS, you will instead get a relatively standard (for Linux) layout unpacked and ready to go. Inside the <code>bin</code> directory there is a <code>neo4j</code> shell script that works using standard <code>init.d</code> parameters. Starting Neo4J is as simple as:</p>
+<div class="highlight"><pre><span></span>$ ./bin/neo4j start
+Starting Neo4j.
+Started neo4j <span class="o">(</span>pid <span class="m">13196</span><span class="o">)</span>. It is available at http://localhost:7474/
+There may be a short delay <span class="k">until</span> the server is ready.
+See /Users/coxg/Downloads/neo4j/neo4j-community-3.1.2/logs/neo4j.log <span class="k">for</span> current status.
+</pre></div>
+
+
+<p>And stopping it is:</p>
+<div class="highlight"><pre><span></span>$ ./bin/neo4j stop
+Stopping Neo4j.. stopped
+</pre></div>
+
+
+<p>In both cases, you then get a Web UI available on <a href="http://localhost:7474">http://localhost:7474</a> that you can use to interact with the database directly, and you also get access to command line tools to do the same without a browser.</p>
+<p>At this point, you're ready to go. There is a lot more that <em>can</em> be configured, but nothing that <em>must</em> be configured for it to work.</p>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://twitter.com/grahamcox82"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+              </ul>
+            </li>
+
+
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://neo4j.com/" target="_blank">
+                Neo4J
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2017 Graham Cox <graham@grahamcox.co.uk>
+            &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://databaseblog.github.io/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://databaseblog.github.io/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="https://databaseblog.github.io/theme/js/respond.min.js"></script>
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-62627767-2']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+
+</body>
+</html>

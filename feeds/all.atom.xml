@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>All about Databases</title><link href="https://databaseblog.github.io/" rel="alternate"></link><link href="https://databaseblog.github.io/feeds/all.atom.xml" rel="self"></link><id>https://databaseblog.github.io/</id><updated>2017-03-28T12:54:00+01:00</updated><entry><title>Neo4J - My First Commands</title><link href="https://databaseblog.github.io/neo4j-my-first-commands.html" rel="alternate"></link><published>2017-03-28T12:54:00+01:00</published><updated>2017-03-28T12:54:00+01:00</updated><author><name>Graham Cox &lt;graham@grahamcox.co.uk&gt;</name></author><id>tag:databaseblog.github.io,2017-03-28:/neo4j-my-first-commands.html</id><summary type="html">&lt;p&gt;Once you've got access to a Neo4J instance, you're going to want to do something with it. It's not much use otherwise. This will show some very basic commands, and show what you can expect to get out of this system with virtually no effort.&lt;/p&gt;
+&lt;p&gt;All of the examples here …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Once you've got access to a Neo4J instance, you're going to want to do something with it. It's not much use otherwise. This will show some very basic commands, and show what you can expect to get out of this system with virtually no effort.&lt;/p&gt;
+&lt;p&gt;All of the examples here are going to be using the command line &lt;code&gt;cypher-shell&lt;/code&gt; simply because it renders better in text form. You can do everything in the Web UI as well.&lt;/p&gt;
+&lt;h3&gt;Creating a node&lt;/h3&gt;
+&lt;p&gt;Creating a node can be achieved using the &lt;code&gt;CREATE&lt;/code&gt; command. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;neo4j&amp;gt; CREATE (n);
+Added 1 nodes
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This creates a new Node, with no properties or labels associated with it. It's pretty boring, but it works. Note that the definition of the Node is wrapped in parenthesis. Every time you declare a Node you will do this.&lt;/p&gt;
+&lt;p&gt;A more interesting node would be one with a Label, and some associated data. Let's create a User record for some made up game.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;neo4j&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nt"&gt;CREATE&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;u&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;User&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;username&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;graham&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+&lt;span class="nt"&gt;Added&lt;/span&gt; &lt;span class="nt"&gt;1&lt;/span&gt; &lt;span class="nt"&gt;nodes&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;Set&lt;/span&gt; &lt;span class="nt"&gt;1&lt;/span&gt; &lt;span class="nt"&gt;properties&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;Added&lt;/span&gt; &lt;span class="nt"&gt;1&lt;/span&gt; &lt;span class="nt"&gt;labels&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There. It really is that simple.&lt;/p&gt;
+&lt;p&gt;Note that this breaks down into a number of parts, as follows:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;CREATE&lt;/code&gt; - This is the command being executed&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;u&lt;/code&gt; - This is just a local tag for this command to represent this node. It must be unique, but it doesn't matter what it is.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;:User&lt;/code&gt; - This is a Label associated with the newly created Node&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;{username:'graham'}&lt;/code&gt; - This is the properties of the node&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Retrieving a node&lt;/h3&gt;
+&lt;p&gt;Once a node has been created, you can then retrieve it. This is done with the MATCH command.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;neo4j&amp;gt; MATCH (n) RETURN n;
+n
+()
+(:User {username: &amp;quot;graham&amp;quot;})
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This output is not the most obvious to read, but it displays two Nodes that were returned - the two that we've just created. The first one has no labels and no properties, and the second has a single label - User - and a single property - username: "graham".&lt;/p&gt;
+&lt;p&gt;This can be extended to match on certain criteria, by specifying it in the nodes that you want to match. For example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;neo4j&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nt"&gt;MATCH&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;n&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;User&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="nt"&gt;RETURN&lt;/span&gt; &lt;span class="nt"&gt;n&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="nt"&gt;n&lt;/span&gt;
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;User&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;username&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;graham&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="nt"&gt;neo4j&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nt"&gt;MATCH&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;n&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;username&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;graham&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="nt"&gt;RETURN&lt;/span&gt; &lt;span class="nt"&gt;n&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="nt"&gt;n&lt;/span&gt;
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;User&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;username&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;graham&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="nt"&gt;neo4j&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nt"&gt;MATCH&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;n&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;User&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;username&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;graham&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="nt"&gt;RETURN&lt;/span&gt; &lt;span class="nt"&gt;n&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="nt"&gt;n&lt;/span&gt;
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;User&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;username&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;graham&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Two different queries, matching in two different ways, but both return the same one node. The first of these queries will return all nodes that have a label of "User", but doesn't care about any other data. The second of these will return all nodes that have a property of "username" that has a value of "graham", but also doesn't care about any other data. These can of course be combined as much as needed to get the matches you want.&lt;/p&gt;
+&lt;p&gt;This is all very good, but it only gives a very limited support for matching. We can match on exactly the data we want being present, but nothing more complicated. For this we can make use of the WHERE clause to the MATCH command. This gives us full boolean logic for complete matching control, the same as in any other database engihe. However, this can be very powerful when we start doing matching across multiple nodes as we will later see.&lt;/p&gt;
+&lt;p&gt;For a simple example here, we can re-write the above queries using the WHERE clause as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;neo4j&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nt"&gt;MATCH&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;n&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="nt"&gt;WHERE&lt;/span&gt; &lt;span class="nt"&gt;n&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;User&lt;/span&gt; &lt;span class="nt"&gt;RETURN&lt;/span&gt; &lt;span class="nt"&gt;n&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="nt"&gt;n&lt;/span&gt;
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;User&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;username&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;graham&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="nt"&gt;neo4j&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nt"&gt;MATCH&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;n&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="nt"&gt;WHERE&lt;/span&gt; &lt;span class="nt"&gt;n&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;username&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;graham&amp;quot;&lt;/span&gt; &lt;span class="nt"&gt;RETURN&lt;/span&gt; &lt;span class="nt"&gt;n&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="nt"&gt;n&lt;/span&gt;
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;User&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;username&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;graham&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="nt"&gt;neo4j&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nt"&gt;MATCH&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;n&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="nt"&gt;WHERE&lt;/span&gt; &lt;span class="nt"&gt;n&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;User&lt;/span&gt; &lt;span class="nt"&gt;AND&lt;/span&gt; &lt;span class="nt"&gt;n&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;username&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;graham&amp;quot;&lt;/span&gt; &lt;span class="nt"&gt;RETURN&lt;/span&gt; &lt;span class="nt"&gt;n&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="nt"&gt;n&lt;/span&gt;
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;User&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;username&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;graham&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;These all return exactly the same as the ones above, but using a different structure that may be more familiar. Where this gets better is when we start to do more complicated matches. For example, we might want all nodes that have a username, but not care what it is:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;neo4j&amp;gt; MATCH (n) WHERE exists(n.username) RETURN n;
+n
+(:User {username: &amp;quot;graham&amp;quot;})
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Creating a relationship&lt;/h3&gt;
+&lt;p&gt;Now that we can create and retrieve Nodes, we want to work with Relationships. After all, that's the entire point of a Graph Database. Not surprisingly, these are also really easy to work with. Firstly though, we'll create some more data to work with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;neo4j&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nt"&gt;CREATE&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;Character&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Bob&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+&lt;span class="nt"&gt;Added&lt;/span&gt; &lt;span class="nt"&gt;1&lt;/span&gt; &lt;span class="nt"&gt;nodes&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;Set&lt;/span&gt; &lt;span class="nt"&gt;1&lt;/span&gt; &lt;span class="nt"&gt;properties&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;Added&lt;/span&gt; &lt;span class="nt"&gt;1&lt;/span&gt; &lt;span class="nt"&gt;labels&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And now that we've got a User node and a Character node, we'll tell the system that the User is the OWNER of the Character.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;neo4j&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nt"&gt;MATCH&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;u&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;User&lt;/span&gt;&lt;span class="o"&gt;),&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;Character&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="nt"&gt;CREATE&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;u&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="nt"&gt;-&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;OWNER&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="nt"&gt;-&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;(&lt;/span&gt;&lt;span class="nt"&gt;c&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+&lt;span class="nt"&gt;Created&lt;/span&gt; &lt;span class="nt"&gt;1&lt;/span&gt; &lt;span class="nt"&gt;relationships&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There's a lot going on here. Firstly you'll notice that we have both a MATCH and a CREATE command in the same statement. This is a method of chaining the output of one command into the next one. Secondly, you'll notice that the MATCH command is returning two different, distinct nodes. There's no reason not to do this, and you can return as many as you need. Finally, you'll notice the syntax for the CREATE statement is a little bit different to before. In this case, what we are creating is the relationship between to nodes that we've already matched. You'll also see that the CREATE statement re-uses the tags that we gave the nodes in the MATCH statement. This is used by the system to know that these are not new nodes to be created, but existing ones to re-use. As it happens, you can create nodes and relationships all in one go if you desire, simply by defining them in the CREATE instead of re-using them from a MATCH.&lt;/p&gt;
+&lt;p&gt;You'll note here that the definition of the Relationship is inside square brackets, and has lines on either side. In fact, what we've got here is a directional relationship, which is why the lines look like an arrow. You can draw the arrow either way around, and it will work as expected. You can also leave the arrowhead off altogether and have a non-directional relationship. These are all perfectly valid, and slightly different to each other, so you'll want to make sure you use the correct one for your data.&lt;/p&gt;
+&lt;h3&gt;Retrieving relationships&lt;/h3&gt;
+&lt;p&gt;Now that we've got a relationship, we want to make use of it. Lets start with the obvious one - all of the Characters that belong to the User "graham":&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;neo4j&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nt"&gt;MATCH&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;u&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;User&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;username&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;graham&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="nt"&gt;-&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;r&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;OWNER&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="nt"&gt;-&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;(&lt;/span&gt;&lt;span class="nt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;Character&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="nt"&gt;RETURN&lt;/span&gt; &lt;span class="nt"&gt;c&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="nt"&gt;c&lt;/span&gt;
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;Character&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Bob&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It really is as simple as that. We're specifying a MATCH command, where we want to Match a "User" node that has a property "username" equal to "graham". We want to traverse from this node across a Relationship with a label of "OWNER" to the target "Character" nodes, and we want to return the Character nodes. In this case theres only one, but there might be lots more.&lt;/p&gt;
+&lt;p&gt;All of the filtering that we user before can be used at any part of this match. We've filtered the relationship by label, but can equally do so by properties, and we can do so with WHERE clauses too.&lt;/p&gt;</content></entry><entry><title>Neo4J - Local Deployment</title><link href="https://databaseblog.github.io/neo4j-local-deployment.html" rel="alternate"></link><published>2017-03-27T18:30:00+01:00</published><updated>2017-03-27T18:30:00+01:00</updated><author><name>Graham Cox &lt;graham@grahamcox.co.uk&gt;</name></author><id>tag:databaseblog.github.io,2017-03-27:/neo4j-local-deployment.html</id><summary type="html">&lt;p&gt;Before you can do anything with Neo4J, you need to have access to a running instance. This is relatively easy, but has some subtle differences to many other data stores.&lt;/p&gt;
+&lt;p&gt;The biggest thing to note is that a single Neo4J instance is a single database. There is no support - at …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Before you can do anything with Neo4J, you need to have access to a running instance. This is relatively easy, but has some subtle differences to many other data stores.&lt;/p&gt;
+&lt;p&gt;The biggest thing to note is that a single Neo4J instance is a single database. There is no support - at present - for multiple schemas or databases inside the same instance. You can fake this, but it's really recommended to just have a different instance for each database you want to work with.&lt;/p&gt;
+&lt;p&gt;Installing Neo4J locally is a really trivial process. You need to have Java already installed - since the entire Neo4J system is a Java Application - and then you simply visit &lt;a href="https://neo4j.com/download/community-edition/"&gt;Neo4J&lt;/a&gt; and download for your appropriate OS.&lt;/p&gt;
+&lt;p&gt;If you are using macOS, and you download the DMG version, you will get an application that drops into the Applications area, which - when run - will do everything to set up and execute the system. I assume that the Windows version is the same, but I've not tried it.&lt;/p&gt;
+&lt;p&gt;If you are using Linux, or the tar.gz version on macOS, you will instead get a relatively standard (for Linux) layout unpacked and ready to go. Inside the &lt;code&gt;bin&lt;/code&gt; directory there is a &lt;code&gt;neo4j&lt;/code&gt; shell script that works using standard &lt;code&gt;init.d&lt;/code&gt; parameters. Starting Neo4J is as simple as:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ ./bin/neo4j start
+Starting Neo4j.
+Started neo4j &lt;span class="o"&gt;(&lt;/span&gt;pid &lt;span class="m"&gt;13196&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;. It is available at http://localhost:7474/
+There may be a short delay &lt;span class="k"&gt;until&lt;/span&gt; the server is ready.
+See /Users/coxg/Downloads/neo4j/neo4j-community-3.1.2/logs/neo4j.log &lt;span class="k"&gt;for&lt;/span&gt; current status.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And stopping it is:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ ./bin/neo4j stop
+Stopping Neo4j.. stopped
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In both cases, you then get a Web UI available on &lt;a href="http://localhost:7474"&gt;http://localhost:7474&lt;/a&gt; that you can use to interact with the database directly, and you also get access to command line tools to do the same without a browser.&lt;/p&gt;
+&lt;p&gt;At this point, you're ready to go. There is a lot more that &lt;em&gt;can&lt;/em&gt; be configured, but nothing that &lt;em&gt;must&lt;/em&gt; be configured for it to work.&lt;/p&gt;</content></entry><entry><title>Neo4J - Quick Dive into Data Types</title><link href="https://databaseblog.github.io/neo4j-quick-dive-into-data-types.html" rel="alternate"></link><published>2017-03-27T17:16:00+01:00</published><updated>2017-03-27T17:16:00+01:00</updated><author><name>Graham Cox &lt;graham@grahamcox.co.uk&gt;</name></author><id>tag:databaseblog.github.io,2017-03-27:/neo4j-quick-dive-into-data-types.html</id><summary type="html">&lt;p&gt;Neo4J offers two different types of data that it can store - Nodes and Relationships. Nodes are the actual real data entities in your application, and Relationships are the links between them.  The only difference between these two types of data is that a Relationship must be between two Nodes. Otherwise …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Neo4J offers two different types of data that it can store - Nodes and Relationships. Nodes are the actual real data entities in your application, and Relationships are the links between them.  The only difference between these two types of data is that a Relationship must be between two Nodes. Otherwise, anything you can represent on one you can represent on another.&lt;/p&gt;
+&lt;p&gt;Both Nodes and Relationships can also contain zero or more Labels, where a Label is simply a String tag that is used to identify the type of data being used. These will become important later when we are working with the data in our database, and also when we want to create schemas to restrict the data.&lt;/p&gt;
+&lt;p&gt;Both Nodes and Relationships can contain zero or more Properties, where a Property is simply a Key - which is always a String - and a Value - which is one of:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Boolean&lt;/li&gt;
+&lt;li&gt;Number&lt;ul&gt;
+&lt;li&gt;Byte - 8 bit Integer&lt;/li&gt;
+&lt;li&gt;Short - 16 bit Integer&lt;/li&gt;
+&lt;li&gt;Int - 32 bit Integer&lt;/li&gt;
+&lt;li&gt;Long - 64 bit Integer&lt;/li&gt;
+&lt;li&gt;Float - 32 bit IEEE-754 floating-point number&lt;/li&gt;
+&lt;li&gt;Double - 64 bit IEEE-754 floating-point number&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Char - UTF-16 Characters&lt;/li&gt;
+&lt;li&gt;String&lt;/li&gt;
+&lt;li&gt;Arrays of the above&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;One thing to note is that there is no support for any Time based data types. This may seem surprising, but it is not actually as restrictive as it may appear. The best options for this are to store it as an ISO-8601 string, or else as an offset since the epoch. The exact use here will depend on what you want to do with it. The String format allows for more information - such as timezone - to be included, but makes it difficult to do range queries. &lt;/p&gt;
+&lt;p&gt;There is no technical limit to the number of properties or to the size of them. (Note, there will be realistic limits imposed by things such as storage space)&lt;/p&gt;</content></entry><entry><title>Introduction to Neo4J</title><link href="https://databaseblog.github.io/introduction-to-neo4j.html" rel="alternate"></link><published>2017-03-26T18:52:00+01:00</published><updated>2017-03-26T18:52:00+01:00</updated><author><name>Graham Cox &lt;graham@grahamcox.co.uk&gt;</name></author><id>tag:databaseblog.github.io,2017-03-26:/introduction-to-neo4j.html</id><summary type="html">&lt;p&gt;The first database technology that I am going to explore is Neo4J. This is a relative newcomer to the Database Technologies market - having been originally launched only 10 years ago. (Relative to such staples as Oracle, which was already 30 years old at that point!)&lt;/p&gt;
+&lt;p&gt;What makes Neo4J especially interesting …&lt;/p&gt;</summary><content type="html">&lt;p&gt;The first database technology that I am going to explore is Neo4J. This is a relative newcomer to the Database Technologies market - having been originally launched only 10 years ago. (Relative to such staples as Oracle, which was already 30 years old at that point!)&lt;/p&gt;
+&lt;p&gt;What makes Neo4J especially interesting is that it models Relationships, instead of just Data. By this, I mean that there is a concept stored inside the database of the relationship between two records (or Nodes, as they are called in Neo4J). This is very different to the RDBMS world where you have simply got flat tables, and then the concept of Foreign Keys to link them together. Foreign Keys are really nothing more than a promise that this value will also be present in another table, whereas Neo4J Relationships are a concrete realisation of the link between two records. Further to this, Relationships in Neo4J are capable of having data associated with them, in exactly the same way that Nodes are. This makes them first class citizens in the database engine, which is hugely powerful. In an RDBMS, the only way to achieve this is to use a Link Table, which gives rise to a whole host of other problems.&lt;/p&gt;
+&lt;p&gt;So, what does this look like? Lets take the example of a Roleplaying Game. In our game, we are going to have Characters, and each Character is going to have a set of Skills.&lt;/p&gt;
+&lt;p&gt;In the RDBMS, we would have a situation like this:
+&lt;img alt="Pelican" src="neo4j/introduction-to-neo4j-rdbms-example.png"&gt;
+Note the messy link table in the middle. In this case, I've marked the two Foreign Key columns as being a Composite Primary Key, but not all RDBMS systems allow you to do this. If that's not possible then you have to take great care to not have duplicate entries in the join table, which would then mean that the Character has two different values for the same Skill.&lt;/p&gt;
+&lt;p&gt;What we are actually trying to represent here is the link between Character and Skill having a property on it. Something like this:
+&lt;img alt="Pelican" src="neo4j/introduction-to-neo4j-neo4j-example.png"&gt;
+No middle table. No need to keep track of foreign keys. No worrying about one end of the relationship being removed and the other one dangling. It all just works cleanly.&lt;/p&gt;
+&lt;p&gt;Graph Databases in general, and Neo4J in specific, make managing data that is very relationship driven significantly easier than a traditional RDBMS. As we will see, there are costs to this as well as benefits, but ultimately if your data is highly relational then it might well be worth investigating.&lt;/p&gt;</content></entry><entry><title>Introduction</title><link href="https://databaseblog.github.io/introduction.html" rel="alternate"></link><published>2017-03-26T18:49:00+01:00</published><updated>2017-03-26T18:49:00+01:00</updated><author><name>Graham Cox &lt;graham@grahamcox.co.uk&gt;</name></author><id>tag:databaseblog.github.io,2017-03-26:/introduction.html</id><summary type="html">&lt;p&gt;This site exists as an exploration of database technologies of all forms, primarially from the point of view of a developer working with the technology but also touching on many other concepts, such as deployment, hosting, performance engineering, testing and so on.&lt;/p&gt;
+&lt;p&gt;There is no limit to the database technologies …&lt;/p&gt;</summary><content type="html">&lt;p&gt;This site exists as an exploration of database technologies of all forms, primarially from the point of view of a developer working with the technology but also touching on many other concepts, such as deployment, hosting, performance engineering, testing and so on.&lt;/p&gt;
+&lt;p&gt;There is no limit to the database technologies that will be discussed here, but primarially I will be focusing on the technologies that are less discussed elsewhere, as I feel these have much more of interest to explore.&lt;/p&gt;</content></entry></feed>
